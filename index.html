@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>채팅</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #chat-box {
+      width: 100%;
+      max-width: 500px;
+      height: 300px;
+      border: 1px solid #ccc;
+      background-color: white;
+      margin: 0 auto 10px;
+      padding: 10px;
+      overflow-y: scroll;
+      box-sizing: border-box;
+    }
+
+    .message {
+      padding: 5px;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #eee;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 300px;
+      padding: 8px;
+    }
+
+    input[type="submit"] {
+      padding: 8px 16px;
+    }
+
+    /* ✅ 모바일 화면 전용 스타일 */
+    @media (max-width: 600px) {
+      form {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="submit"] {
+        width: 90%;
+        font-size: 1rem;
+      }
+
+      #chat-box {
+        height: 250px;
+      }
+
+      body {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  {% if status == "logout" %}
+  <h1>채팅창</h1>
+
+    <form action = "/login" method="POST" id="chat-form">
+      <p>학번: </p><input type = "text" name = "hakbun" id="msg" >
+      <p>비밀번호: <br></p><input type="password" name = "pa" id="msg" >
+      <input type = "submit" value = "확인">
+    </form>
+
+  {% elif status == 'login' %}
+    <h1>채팅창</h1>
+
+    <div id="chat-box">
+      {{textInf|safe}}
+    </div>
+
+    <form action = "/playchat" method="POST" id="chat-form">
+      <input type = "text" name = "user_nik" id="msg" placeholder="별명을 입력하세요" value = "{{nikname}}" />
+      <input type = "text" name = "user_text" id="msg" placeholder="메시지를 입력하세요" />
+      <input type = "hidden" name = "user_hak" value = {{ha}}>
+      <input type = "submit" value = "전송">
+    </form>
+  
+  <!-- <script>
+    detInterval(() => {
+      fetch("/getchat")
+        .then(responese =>
+          respoense.text())
+        .then(data => {
+          document.getElementById("chat-box").innerHTML = data;
+        });
+    }, 1000); 
+    // 소리없는 아우성
+  </script> -->
+  {% endif %}
+
+
+<!-- return render_template('index.html',
+                        textInf = text_inf(30),
+                        status = 'login',
+                        ha = user_id
+                        ) -->
+
+  <!-- <script>
+    const form = document.getElementById('chat-form');
+    const msgInput = document.getElementById('msg');
+    const chatBox = document.getElementById('chat-box');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // 새로고침 방지
+      const msg = msgInput.value.trim();
+      if (msg !== '') {
+        const div = document.createElement('div');
+        div.className = 'message';
+        div.textContent = `나: ${msg}`;
+        chatBox.appendChild(div);
+        msgInput.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight; // 스크롤 맨 아래로
+      }
+    });
+  </script> -->
+
+</body>
+</html>
